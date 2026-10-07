@@ -66,7 +66,7 @@ export function analyze(message: string, channel: Channel): Result {
         explain: "Always reach services through an address you type yourself, never through a link in a message.",
       };
   // place correct answer at its shuffled index
-  quiz.answer = quiz.options.indexOf(top ? top.title : quiz.options[0]);
+  quiz.answer = quiz.options.indexOf(top ? top.title : quiz.options[0]!);
 
   return {
     id: Math.random().toString(36).slice(2, 10),
@@ -84,7 +84,7 @@ export function analyze(message: string, channel: Channel): Result {
 function shuffle(arr: string[], seed: string) {
   const i = seed.length % arr.length;
   const copy = arr.slice(1);
-  copy.splice(i, 0, arr[0]);
+  copy.splice(i, 0, arr[0]!);
   return copy;
 }
 
