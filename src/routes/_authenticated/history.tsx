@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { LEVEL_LABEL, LEVEL_SOFT, SAMPLES, loadResults, type Level, type Result } from "@/lib/analyzer";
 
-export const Route = createFileRoute("/history")({
+export const Route = createFileRoute("/_authenticated/history")({
   head: () => ({
     meta: [
       { title: "Scan history — ScamGuard" },
