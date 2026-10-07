@@ -17,7 +17,7 @@ export const Route = createFileRoute("/history")({
 const filters: ("all" | Level)[] = ["all", "high", "medium", "low"];
 
 function History() {
-  const [items, setItems] = useState<Result[]>(SAMPLES);
+  const [items, setItems] = useState<Result[]>([]);
   const [f, setF] = useState<"all" | Level>("all");
   useEffect(() => setItems([...loadResults(), ...SAMPLES]), []);
   const shown = items.filter((i) => f === "all" || i.level === f);
