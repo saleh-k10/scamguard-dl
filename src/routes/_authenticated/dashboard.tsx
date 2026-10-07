@@ -14,7 +14,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 
 function Dashboard() {
   const { user } = Route.useRouteContext();
-  const name = (user.user_metadata?.name as string | undefined) || user.email;
+  const name = (user.user_metadata?.["name"] as string | undefined) || user.email;
   return (
     <main className="mx-auto max-w-5xl px-5 py-12 sm:px-6 md:py-16">
       <span className="font-mono text-[11px] uppercase tracking-widest text-primary">Dashboard</span>
