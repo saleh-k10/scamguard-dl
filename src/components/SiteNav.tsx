@@ -1,4 +1,6 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 export function Backdrop() {
   return (
@@ -23,17 +25,30 @@ export function Logo() {
 const link = "text-sm text-muted-foreground hover:text-foreground transition-colors";
 
 export function SiteNav() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const logout = async () => {
+    await supabase.auth.signOut();
+    navigate({ to: "/login", replace: true });
+  };
   return (
     <nav className="glass sticky top-0 z-30 border-x-0 border-t-0">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 sm:px-6">
         <Logo />
         <div className="hidden items-center gap-7 md:flex">
+          {user && <Link to="/dashboard" className={link} activeProps={{ className: "text-foreground font-medium" }}>Dashboard</Link>}
           <Link to="/check" className={link} activeProps={{ className: "text-foreground font-medium" }}>Check a message</Link>
           <Link to="/history" className={link} activeProps={{ className: "text-foreground font-medium" }}>History</Link>
         </div>
         <div className="flex items-center gap-1 sm:gap-2">
-          <Link to="/login" className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground">Log in</Link>
-          <Link to="/signup" className="rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background">Sign up</Link>
+          {user ? (
+            <button onClick={logout} className="rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background">Log out</button>
+          ) : (
+            <>
+              <Link to="/login" className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground">Log in</Link>
+              <Link to="/signup" className="rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background">Sign up</Link>
+            </>
+          )}
         </div>
       </div>
       <div className="flex justify-center gap-6 border-t border-border py-2 md:hidden">

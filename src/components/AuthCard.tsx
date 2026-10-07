@@ -1,9 +1,40 @@
-import { Link } from "@tanstack/react-router";
-import type { FormEvent } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useState, type FormEvent } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export function AuthCard({ mode }: { mode: "login" | "signup" }) {
   const isLogin = mode === "login";
-  const submit = (e: FormEvent) => e.preventDefault();
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+
+  const submit = async (e: FormEvent) => {
+    e.preventDefault();
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    if (isLogin) {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      setBusy(false);
+      if (error) return setError(error.message);
+      navigate({ to: "/dashboard" });
+    } else {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { emailRedirectTo: `${window.location.origin}/dashboard`, data: { name } },
+      });
+      setBusy(false);
+      if (error) return setError(error.message);
+      if (data.session) navigate({ to: "/dashboard" });
+      else setNotice("Check your email to confirm your account, then log in.");
+    }
+  };
+
   const field = "mt-1.5 w-full rounded-[12px] border border-input bg-surface px-4 py-3 text-[15px] outline-none placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-ring";
   return (
     <main className="mx-auto grid max-w-5xl items-center gap-10 px-5 py-14 sm:px-6 md:grid-cols-2 md:py-20">
@@ -20,15 +51,18 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
           <Link to={isLogin ? "/signup" : "/login"} className="font-medium text-primary hover:underline">{isLogin ? "Sign up" : "Log in"}</Link>
         </p>
         {!isLogin && (
-          <label className="mt-6 block text-sm font-medium">Name<input className={field} placeholder="Alex Morgan" autoComplete="name" /></label>
+          <label className="mt-6 block text-sm font-medium">Name<input value={name} onChange={(e) => setName(e.target.value)} className={field} placeholder="Alex Morgan" autoComplete="name" /></label>
         )}
-        <label className={`${isLogin ? "mt-6" : "mt-4"} block text-sm font-medium`}>Email<input type="email" className={field} placeholder="you@university.edu" autoComplete="email" /></label>
+        <label className={`${isLogin ? "mt-6" : "mt-4"} block text-sm font-medium`}>Email<input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={field} placeholder="you@university.edu" autoComplete="email" /></label>
         <label className="mt-4 block text-sm font-medium">
-          <span className="flex justify-between">Password{isLogin && <a className="font-normal text-muted-foreground hover:text-foreground">Forgot?</a>}</span>
-          <input type="password" className={field} placeholder="••••••••" autoComplete={isLogin ? "current-password" : "new-password"} />
+          Password
+          <input required minLength={6} type="password" value={password} onChange={(e) => setPassword(e.target.value)} className={field} placeholder="••••••••" autoComplete={isLogin ? "current-password" : "new-password"} />
         </label>
-        <button className="mt-6 w-full rounded-full bg-primary py-3.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90">{isLogin ? "Log in" : "Create account"}</button>
-        <p className="mt-4 text-center text-xs text-muted-foreground">Accounts are coming soon — this is a preview of the sign-in experience.</p>
+        {error && <p className="mt-4 text-sm text-high">{error}</p>}
+        {notice && <p className="mt-4 text-sm text-low">{notice}</p>}
+        <button disabled={busy} className="mt-6 w-full rounded-full bg-primary py-3.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60">
+          {busy ? "Please wait…" : isLogin ? "Log in" : "Create account"}
+        </button>
       </form>
     </main>
   );
