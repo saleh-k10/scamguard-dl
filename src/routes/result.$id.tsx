@@ -52,7 +52,9 @@ function ResultPage() {
       <div className="rise flex flex-wrap items-end justify-between gap-4">
         <div>
           <span className="font-mono text-[11px] uppercase tracking-widest text-primary">Analysis · {r.channel}</span>
-          <h1 className="mt-2 text-4xl font-bold md:text-5xl">Your result</h1>
+          <h1 className="mt-2 text-4xl font-bold md:text-5xl">{kind === "sample" ? "Example scan" : "Your result"}</h1>
+          {kind === "sample" && <p className="mt-2 text-sm text-muted-foreground">This is a demo example, not part of your history.</p>}
+          {kind === "unsaved" && <p className="mt-2 text-sm text-muted-foreground"><Link to="/login" className="text-primary hover:underline">Log in</Link> to save scans to your history. This result disappears when you leave.</p>}
         </div>
         <Link to="/check" className="rounded-full border border-border bg-surface px-5 py-2.5 text-sm font-medium hover:bg-card">Check another</Link>
       </div>
@@ -76,7 +78,7 @@ function ResultPage() {
             <span className={`text-right ${lvl === "high" ? "text-high font-semibold" : ""}`}>High</span>
           </div>
           <div className="mt-6 rounded-[12px] border border-border bg-surface p-4 text-sm leading-relaxed text-muted-foreground">
-            <span className="font-medium text-foreground">Message analyzed</span>
+            <span className="font-medium text-foreground">{kind === "saved" ? "Message preview" : "Message analyzed"}</span>
             <p className="mt-1 line-clamp-5 whitespace-pre-wrap">{r.message}</p>
           </div>
         </section>
