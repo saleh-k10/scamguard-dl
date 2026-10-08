@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 const PUBLISHED_URL = "https://scamguard-dl.lovable.app";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-type FieldErrors = { name?: string; email?: string; password?: string };
+type FieldErrors = { name?: string | undefined; email?: string | undefined; password?: string | undefined };
 
 export function AuthCard({ mode }: { mode: "login" | "signup" }) {
   const isLogin = mode === "login";
