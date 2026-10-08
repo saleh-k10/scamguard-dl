@@ -7,6 +7,7 @@ import { ruleFallback } from "@/lib/ai-analysis";
 import { MAX_MESSAGE_LENGTH, redactSensitiveText } from "@/lib/sensitive-text";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { createScan, setUnsaved } from "@/lib/scans";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -98,6 +99,7 @@ function Check() {
         <span className="font-mono text-[11px] uppercase tracking-widest text-primary">Analyze</span>
         <h1 className="mt-2 text-4xl font-bold md:text-5xl">Check a message</h1>
         <p className="mt-3 text-muted-foreground">Paste the full text. Don't click any links in it while you decide.</p>
+        <p className="mt-4 flex items-center gap-2 text-xs font-medium text-primary"><Sparkles className="size-3.5" aria-hidden="true" />AI assessment · advisory, not a verdict</p>
       </div>
 
       <div className="rise glass-strong mt-8 rounded-[22px] p-5 sm:p-7 [animation-delay:80ms]">

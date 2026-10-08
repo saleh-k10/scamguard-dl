@@ -39,6 +39,7 @@ export function SiteNav() {
           {user && <Link to="/dashboard" className={link} activeProps={{ className: "text-foreground font-medium" }}>Dashboard</Link>}
           <Link to="/check" className={link} activeProps={{ className: "text-foreground font-medium" }}>Check a message</Link>
           <Link to="/history" className={link} activeProps={{ className: "text-foreground font-medium" }}>History</Link>
+          {user && <Link to="/account" className={link} activeProps={{ className: "text-foreground font-medium" }}>Account</Link>}
         </div>
         <div className="flex items-center gap-1 sm:gap-2">
           {user ? (
@@ -54,6 +55,7 @@ export function SiteNav() {
       <div className="flex justify-center gap-6 border-t border-border py-2 md:hidden">
         <Link to="/check" className={link}>Check</Link>
         <Link to="/history" className={link}>History</Link>
+        {user && <Link to="/account" className={link}>Account</Link>}
       </div>
     </nav>
   );

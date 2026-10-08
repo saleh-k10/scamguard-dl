@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Rules
+- Self-service deletion uses a POST server function with strict confirmation input and existing bearer middleware; a server-only helper revalidates the token through Admin Auth and derives the sole deletion target before deleting scans then the auth user, so callers cannot select another account.
 - AI analysis is a public server function using a server-only streamed Responses SDK helper; credentials and prompts never enter client bundles, while user scans continue through the existing RLS browser client.
 - Analysis metadata and education use optional quiz.meta within the existing JSON column, so older scans remain readable without a scans schema change.
 - Terminal AI availability/credit/access errors pause calls in a server-only service-state table; restore access and clear its pause explicitly before resuming, never retry terminal errors automatically.
