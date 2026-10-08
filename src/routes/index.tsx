@@ -7,6 +7,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Check suspicious emails and SMS for scam warning signs, get a risk score, and learn how to spot scams yourself." },
       { property: "og:title", content: "ScamGuard — Think before you click" },
       { property: "og:description", content: "Paste a suspicious message, get a 0–100 risk score and learn the warning signs." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Landing,

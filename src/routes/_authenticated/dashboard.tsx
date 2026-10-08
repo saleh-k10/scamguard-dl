@@ -7,6 +7,8 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
       { name: "description", content: "Your ScamGuard dashboard." },
       { property: "og:title", content: "Dashboard — ScamGuard" },
       { property: "og:description", content: "Check messages and review your scans." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Dashboard,
