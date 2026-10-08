@@ -1,0 +1,3 @@
+- [ ] Add signup verification screen and resend states without changing authentication security or callback.
+- [ ] Test validation, resend outcomes/cooldown, and desktop/mobile presentation.
+- [ ] Check automatic build/type diagnostics and report manual email-delivery checks.

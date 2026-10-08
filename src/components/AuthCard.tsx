@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { EmailVerification } from "@/components/EmailVerification";
 
 const PUBLISHED_URL = "https://scamguard-dl.lovable.app";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -15,7 +17,7 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
+  const [verificationEmail, setVerificationEmail] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   const validate = (): FieldErrors => {
@@ -31,11 +33,12 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
-    setNotice(null);
     const errs = validate();
     setFieldErrors(errs);
     if (Object.keys(errs).length) return;
+    if (busy) return;
     setBusy(true);
+    try {
     if (isLogin) {
       const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
       setBusy(false);
@@ -54,7 +57,15 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
       setBusy(false);
       if (error) return setError(error.message);
       if (data.session) navigate({ to: "/dashboard" });
-      else setNotice("Check your email to confirm your account. The link will bring you back to ScamGuard.");
+      else {
+        setPassword("");
+        setVerificationEmail(email.trim());
+      }
+    }
+    } catch {
+      setError("We couldn't connect to ScamGuard. Check your connection and try again.");
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -68,7 +79,7 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
           {isLogin ? "Log in to see your scan history and pick up where you left off." : "Create a free account to save scans and track the scam patterns you encounter."}
         </p>
       </div>
-      <form noValidate onSubmit={submit} className="rise glass-strong rounded-[22px] p-6 sm:p-8 [animation-delay:80ms]">
+      {verificationEmail && !isLogin ? <EmailVerification email={verificationEmail} redirectTo={`${PUBLISHED_URL}/auth/callback`} /> : <form noValidate onSubmit={submit} className="rise glass-strong rounded-[22px] p-6 sm:p-8 [animation-delay:80ms]">
         <h2 className="text-2xl font-bold">{isLogin ? "Log in" : "Create account"}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           {isLogin ? "New here? " : "Already have an account? "}
@@ -83,12 +94,11 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
           <input required aria-invalid={!!fieldErrors.password} type="password" value={password} onChange={(e) => { setPassword(e.target.value); setFieldErrors((f) => ({ ...f, password: undefined })); }} className={field} placeholder="••••••••" autoComplete={isLogin ? "current-password" : "new-password"} />
           {fieldErr(fieldErrors.password)}
         </label>
-        {error && <p className="mt-4 text-sm text-high">{error}</p>}
-        {notice && <p className="mt-4 text-sm text-low">{notice}</p>}
-        <button disabled={busy} className="mt-6 w-full rounded-full bg-primary py-3.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60">
+        {error && <p role="alert" className="mt-4 text-sm text-high">{error}</p>}
+        <Button type="submit" disabled={busy} className="mt-6 h-auto w-full rounded-full py-3.5 text-sm font-semibold disabled:opacity-60">
           {busy ? "Please wait…" : isLogin ? "Log in" : "Create account"}
-        </button>
-      </form>
+        </Button>
+      </form>}
     </main>
   );
 }

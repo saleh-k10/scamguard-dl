@@ -10,4 +10,5 @@
 <!-- LOVABLE:END -->
 
 ## Rules
+- Signup verification UI lives in a dedicated component that calls Auth signup resend with the existing callback URL and a timed click cooldown; this keeps the form and callback independent.
 - Scans are stored per user in the `scans` table with RLS (owner-only); never persist the full raw message, only a short preview — privacy requirement.
