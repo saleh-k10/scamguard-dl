@@ -1,3 +1,3 @@
-- [ ] Add concise AI transparency to the landing and Check pages without changing analysis.
-- [ ] Add protected Account page and secure confirmed self-service deletion.
-- [ ] Test authorization, confirmation, existing behavior, and review final-project gaps.
+- [x] Add concise AI transparency to the landing and Check pages without changing analysis.
+- [x] Add protected Account page and secure confirmed self-service deletion.
+- [x] Test authorization, confirmation, existing behavior, and review final-project gaps.

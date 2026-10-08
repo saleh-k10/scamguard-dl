@@ -27,7 +27,7 @@ export function DeleteAccountDialog({ onDelete }: Props) {
   };
   return <Dialog open={open} onOpenChange={changeOpen}>
     <DialogTrigger asChild><Button variant="destructive" className="rounded-full"><Trash2 aria-hidden="true" />Delete account</Button></DialogTrigger>
-    <DialogContent className="glass-strong max-w-[calc(100%-2rem)] rounded-[22px] sm:max-w-lg" onEscapeKeyDown={(event) => { if (busy) event.preventDefault(); }} onInteractOutside={(event) => { if (busy) event.preventDefault(); }}>
+    <DialogContent className="max-w-[calc(100%-2rem)] rounded-[22px] bg-popover sm:max-w-lg" onEscapeKeyDown={(event) => { if (busy) event.preventDefault(); }} onInteractOutside={(event) => { if (busy) event.preventDefault(); }}>
       <DialogHeader>
         <DialogTitle>Delete your account?</DialogTitle>
         <DialogDescription className="mt-2 leading-relaxed">This permanently deletes your ScamGuard account and all saved scans. This cannot be undone.</DialogDescription>
