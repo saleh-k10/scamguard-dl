@@ -1,3 +1,3 @@
-- [x] Add concise AI transparency to the landing and Check pages without changing analysis.
-- [x] Add protected Account page and secure confirmed self-service deletion.
-- [x] Test authorization, confirmation, existing behavior, and review final-project gaps.
+- [x] Add published-app password recovery, validation, and safe success/error states.
+- [x] Add confirmed saved-result deletion through the existing owner-only client.
+- [x] Run the complete test suite, inspect diagnostics, and verify desktop/mobile flows.

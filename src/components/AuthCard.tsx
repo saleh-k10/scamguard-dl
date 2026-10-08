@@ -94,6 +94,7 @@ export function AuthCard({ mode }: { mode: "login" | "signup" }) {
           <input required aria-invalid={!!fieldErrors.password} type="password" value={password} onChange={(e) => { setPassword(e.target.value); setFieldErrors((f) => ({ ...f, password: undefined })); }} className={field} placeholder="••••••••" autoComplete={isLogin ? "current-password" : "new-password"} />
           {fieldErr(fieldErrors.password)}
         </label>
+        {isLogin && <div className="mt-3 text-right"><Link to="/forgot-password" className="text-sm font-medium text-primary hover:underline">Forgot password?</Link></div>}
         {error && <p role="alert" className="mt-4 text-sm text-high">{error}</p>}
         <Button type="submit" disabled={busy} className="mt-6 h-auto w-full rounded-full py-3.5 text-sm font-semibold disabled:opacity-60">
           {busy ? "Please wait…" : isLogin ? "Log in" : "Create account"}

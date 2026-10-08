@@ -4,6 +4,7 @@ import { LEVEL_LABEL, LEVEL_SOFT, type Level, type Result } from "@/lib/analyzer
 import { listMyScans } from "@/lib/scans";
 
 export const Route = createFileRoute("/_authenticated/history")({
+  validateSearch: (search: Record<string, unknown>): { scanDeleted?: boolean } => search['scanDeleted'] === true || search['scanDeleted'] === "true" ? { scanDeleted: true } : {},
   head: () => ({
     meta: [
       { title: "Scan history — ScamGuard" },
@@ -20,6 +21,7 @@ export const Route = createFileRoute("/_authenticated/history")({
 const filters: ("all" | Level)[] = ["all", "high", "medium", "low"];
 
 function History() {
+  const { scanDeleted } = Route.useSearch();
   const [items, setItems] = useState<Result[] | null>(null);
   const [error, setError] = useState(false);
   const [f, setF] = useState<"all" | Level>("all");
@@ -34,6 +36,7 @@ function History() {
     <main className="mx-auto max-w-5xl px-5 py-12 sm:px-6 md:py-16">
       <span className="font-mono text-[11px] uppercase tracking-widest text-primary">History</span>
       <h1 className="mt-2 text-4xl font-bold md:text-5xl">Scan history</h1>
+      {scanDeleted && <p role="status" className="mt-5 rounded-[12px] border border-low/30 bg-low/10 p-4 text-sm">Your saved scan has been deleted.</p>}
 
       <div className="mt-8 grid grid-cols-3 gap-3">
         {(["high", "medium", "low"] as Level[]).map((l) => (

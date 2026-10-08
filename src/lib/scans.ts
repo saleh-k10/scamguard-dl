@@ -1,6 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Result, Sign, Channel, Level } from "@/lib/analyzer";
 import { redactSensitiveText } from "@/lib/sensitive-text";
+import { z } from "zod";
 
 export const PREVIEW_LEN = 120;
 
@@ -60,4 +61,13 @@ export async function getMyScan(id: string): Promise<Result | null> {
   const { data, error } = await supabase.from("scans").select("*").eq("id", id).maybeSingle();
   if (error) throw error;
   return data ? toResult(data as Row) : null;
+}
+
+export async function deleteMyScan(id: string): Promise<void> {
+  const scanId = z.string().uuid().parse(id);
+  const { data: identity, error: authError } = await supabase.auth.getUser();
+  if (authError || !identity.user) throw new Error("Log in to delete a saved scan.");
+  // Only a scan ID is accepted. The existing DELETE/SELECT RLS policies enforce ownership.
+  const { data, error } = await supabase.from("scans").delete().eq("id", scanId).select("id");
+  if (error || data?.length !== 1 || data[0]?.id !== scanId) throw new Error("Scan deletion could not be confirmed.");
 }
