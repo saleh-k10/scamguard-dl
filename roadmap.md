@@ -1,3 +1,3 @@
-- [ ] Add signup verification screen and resend states without changing authentication security or callback.
-- [ ] Test validation, resend outcomes/cooldown, and desktop/mobile presentation.
-- [ ] Check automatic build/type diagnostics and report manual email-delivery checks.
+- [x] Add signup verification screen and resend states without changing authentication security or callback.
+- [x] Test validation, resend outcomes/cooldown, and desktop/mobile presentation (mocked email responses; seven tests passed).
+- [x] Check automatic compilation diagnostics (build OK); manual real-email delivery and same-/cross-device confirmation remain user checks, not verified here.
