@@ -18,3 +18,4 @@
 - Scans are stored per user in the `scans` table with RLS (owner-only); never persist the full raw message, only a short preview — privacy requirement.
 - Password recovery uses dedicated public request/reset routes and the browser Auth client; reset forms require validated recovery provenance rather than an ordinary session, so normal sign-in cannot silently unlock recovery.
 - Individual scan deletion accepts only a validated scan ID through the existing authenticated browser client and verifies one returned row before success; ownership remains enforced by existing RLS, with no admin path.
+- Publishable backend values are pinned as fallbacks in vite.config.ts because .env is git-ignored and the publish build does not receive it; only browser-safe values belong there, never secrets.
