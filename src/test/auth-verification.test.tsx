@@ -24,8 +24,8 @@ describe("Signup verification", () => {
     expect(screen.getByText("Full name is required.")).toBeVisible();
     expect(screen.getByText("Email is required.")).toBeVisible();
     expect(screen.getByText("Password is required.")).toBeVisible();
-    fireEvent.change(screen.getByLabelText("Email"), { target: { value: "invalid" } });
-    fireEvent.change(screen.getByLabelText("Password"), { target: { value: "123" } });
+    fireEvent.change(screen.getByLabelText(/^Email/), { target: { value: "invalid" } });
+    fireEvent.change(screen.getByLabelText(/^Password/), { target: { value: "123" } });
     fireEvent.click(screen.getByRole("button", { name: "Create account" }));
     expect(screen.getByText("Enter a valid email address.")).toBeVisible();
     expect(screen.getByText("Password must be at least 6 characters.")).toBeVisible();
