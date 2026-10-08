@@ -50,7 +50,7 @@ export function beginPasswordRecovery() {
       } catch { proven = false; }
     }
     if (!proven) throw new Error("A recovery link is required");
-    if (!sessionStorage.getItem(MARKER)) rememberPasswordRecovery(userId);
+    if (recoveryEvent || implicitRecovery || code) rememberPasswordRecovery(userId);
   })();
   return { promise, cancel: () => { cancelled = true; data.subscription.unsubscribe(); } };
 }
