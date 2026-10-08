@@ -4,7 +4,7 @@ import { LEVEL_LABEL, LEVEL_SOFT, type Level, type Result } from "@/lib/analyzer
 import { listMyScans } from "@/lib/scans";
 
 export const Route = createFileRoute("/_authenticated/history")({
-  validateSearch: (search: Record<string, unknown>) => ({ scanDeleted: search.scanDeleted === true || search.scanDeleted === "true" ? true : undefined }),
+  validateSearch: (search: Record<string, unknown>): { scanDeleted?: boolean } => search['scanDeleted'] === true || search['scanDeleted'] === "true" ? { scanDeleted: true } : {},
   head: () => ({
     meta: [
       { title: "Scan history — ScamGuard" },

@@ -12,7 +12,7 @@ export function PasswordRecovery({ mode }: { mode: "request" | "reset" }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmation, setConfirmation] = useState("");
-  const [fields, setFields] = useState<Record<string, string>>({});
+  const [fields, setFields] = useState<{ email?: string; password?: string; confirmation?: string }>({});
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -74,7 +74,7 @@ export function PasswordRecovery({ mode }: { mode: "request" | "reset" }) {
     finally { pending.current = false; setBusy(false); }
   };
 
-  const fieldError = (key: string) => fields[key] && <span id={`${key}-error`} className="mt-1.5 block text-sm font-normal text-high">{fields[key]}</span>;
+  const fieldError = (key: "email" | "password" | "confirmation") => fields[key] && <span id={`${key}-error`} className="mt-1.5 block text-sm font-normal text-high">{fields[key]}</span>;
   const invalid = resetting && sessionState === "invalid";
   const checking = resetting && sessionState === "checking";
   return <main className="mx-auto max-w-md px-5 py-14 sm:py-20">

@@ -30,7 +30,7 @@ export function beginPasswordRecovery() {
     let proven = recoveryEvent || (implicitRecovery && !!current.data.session);
     if (code && !proven) {
       const exchanged = await supabase.auth.exchangeCodeForSession(code);
-      if (exchanged.error || !exchanged.data.session) throw new Error("Invalid recovery code");
+      if (exchanged.error || !exchanged.data.session || exchanged.data.redirectType !== "recovery") throw new Error("Invalid recovery code");
       proven = true;
     }
     const verified = await supabase.auth.getUser();
