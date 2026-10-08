@@ -1,4 +1,4 @@
-- [ ] Add private AI analysis with structured validation and rule-based fallback.
-- [ ] Redact obvious credentials before transmission and persistence; show sensitive-input and fallback notices.
-- [ ] Preserve owner-only history, signed-out scans, auth, and visual design.
-- [ ] Test normalization, fallback, pages, and a real AI request; report Demo Day checks.
+- [x] Add private AI analysis with structured validation and rule-based fallback.
+- [x] Redact obvious credentials before transmission and persistence; show sensitive-input and fallback notices.
+- [x] Preserve owner-only history, signed-out scans, auth, and visual design.
+- [x] Test normalization, fallback, pages, and a real AI request; report Demo Day checks.
