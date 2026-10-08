@@ -11,6 +11,12 @@ export const newPasswordSchema = z.object({
 const MARKER = "scamguard-password-recovery";
 const MAX_RECOVERY_AGE = 15 * 60_000;
 
+// The shared navigation can initialize Auth before the split reset page mounts.
+export function rememberPasswordRecovery(userId: string) {
+  if (window.location.pathname !== "/reset-password") return;
+  try { sessionStorage.setItem(MARKER, JSON.stringify({ userId, at: Date.now() })); } catch { /* A fresh link remains usable without storage. */ }
+}
+
 // A normal signed-in session alone never unlocks this form.
 export function beginPasswordRecovery() {
   const params = new URLSearchParams(window.location.search);
@@ -36,6 +42,7 @@ export function beginPasswordRecovery() {
     const verified = await supabase.auth.getUser();
     if (verified.error || !verified.data.user || cancelled) throw new Error("Recovery unavailable");
     const userId = verified.data.user.id;
+    proven = proven || recoveryEvent;
     if (!proven && !code && !implicitRecovery) {
       try {
         const stored = JSON.parse(sessionStorage.getItem(MARKER) || "null");
@@ -43,7 +50,7 @@ export function beginPasswordRecovery() {
       } catch { proven = false; }
     }
     if (!proven) throw new Error("A recovery link is required");
-    try { sessionStorage.setItem(MARKER, JSON.stringify({ userId, at: Date.now() })); } catch { /* Reload simply requires a fresh link. */ }
+    if (!sessionStorage.getItem(MARKER)) rememberPasswordRecovery(userId);
   })();
   return { promise, cancel: () => { cancelled = true; data.subscription.unsubscribe(); } };
 }
