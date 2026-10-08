@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Sparkles, ShieldCheck, LockKeyhole } from "lucide-react";
 
 export const Route = createFileRoute("/")({
+  validateSearch: (search: Record<string, unknown>): { accountDeleted?: boolean } => ({ accountDeleted: search["accountDeleted"] === true || search["accountDeleted"] === "true" ? true : undefined }),
   head: () => ({
     meta: [
       { title: "ScamGuard — Think before you click" },
@@ -16,13 +18,15 @@ export const Route = createFileRoute("/")({
 
 const steps = [
   { n: "01", t: "Paste", d: "Drop in the email, SMS or message text you're unsure about." },
-  { n: "02", t: "Analyze", d: "We check wording, links and requests against known scam patterns." },
+  { n: "02", t: "Analyze", d: "AI assesses the message for scam indicators and suggests a risk level — not a verdict." },
   { n: "03", t: "Learn", d: "Teach Me Why explains each sign so you can spot the next one alone." },
 ];
 
 function Landing() {
+  const { accountDeleted } = Route.useSearch();
   return (
     <>
+      {accountDeleted && <p role="status" className="mx-auto mt-5 max-w-6xl border-y border-low/25 bg-low/10 px-6 py-3 text-sm">Your account and saved scan history have been deleted.</p>}
       <header className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 md:grid-cols-2 md:py-24">
         <div className="rise">
           <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 text-xs font-medium text-muted-foreground">
@@ -36,6 +40,7 @@ function Landing() {
             <Link to="/check" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90">Check a Message</Link>
             <a href="#how" className="rounded-full border border-border bg-surface px-5 py-3 text-sm font-medium hover:bg-card">How it works</a>
           </div>
+          <p className="mt-4 flex items-center gap-2 text-xs font-medium text-primary"><Sparkles className="size-3.5" aria-hidden="true" />AI-powered analysis</p>
         </div>
         <div className="rise [animation-delay:120ms]">
           <div className="glass-strong rounded-[22px] p-5">
@@ -65,6 +70,15 @@ function Landing() {
           <p className="mt-3 max-w-[70ch] font-display text-xl leading-snug md:text-2xl">
             Scams no longer look like scams. They copy real banks, delivery companies and universities — and rely on one moment of hurry. A second opinion before you click is the simplest protection there is.
           </p>
+        </div>
+      </section>
+      <section className="mx-auto max-w-6xl border-t border-border px-6 py-10 md:py-12" aria-labelledby="ai-transparency">
+        <div className="flex items-center gap-2 text-primary"><Sparkles className="size-4" aria-hidden="true" /><span className="font-mono text-[11px] uppercase tracking-widest">Transparency</span></div>
+        <h2 id="ai-transparency" className="mt-3 text-3xl font-bold">How ScamGuard uses AI</h2>
+        <div className="mt-6 grid gap-7 md:grid-cols-3">
+          <div><ShieldCheck className="size-5 text-primary" aria-hidden="true" /><h3 className="mt-3 text-lg font-semibold">Assessment, not certainty</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">AI assesses wording, links, requests and social-engineering cues. It returns a risk assessment, not a verdict. Independently verify suspicious messages through official channels.</p></div>
+          <div><LockKeyhole className="size-5 text-primary" aria-hidden="true" /><h3 className="mt-3 text-lg font-semibold">Privacy with practical limits</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">Obvious sensitive credentials are redacted where practical before AI processing; detection is not guaranteed. Signed-in history stores only a short preview and structured results — never the full raw message.</p></div>
+          <div><Sparkles className="size-5 text-primary" aria-hidden="true" /><h3 className="mt-3 text-lg font-semibold">A fallback when needed</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">If AI is unavailable, ScamGuard can use its basic pattern checker instead. Results clearly identify the assessment used and remain advisory.</p></div>
         </div>
       </section>
 

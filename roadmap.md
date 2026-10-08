@@ -1,4 +1,3 @@
-- [x] Add private AI analysis with structured validation and rule-based fallback.
-- [x] Redact obvious credentials before transmission and persistence; show sensitive-input and fallback notices.
-- [x] Preserve owner-only history, signed-out scans, auth, and visual design.
-- [x] Test normalization, fallback, pages, and a real AI request; report Demo Day checks.
+- [ ] Add concise AI transparency to the landing and Check pages without changing analysis.
+- [ ] Add protected Account page and secure confirmed self-service deletion.
+- [ ] Test authorization, confirmation, existing behavior, and review final-project gaps.
