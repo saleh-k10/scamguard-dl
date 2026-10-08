@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { LEVEL_LABEL, LEVEL_SOFT, SAMPLES, loadResults, type Level, type Result } from "@/lib/analyzer";
+import { LEVEL_LABEL, LEVEL_SOFT, type Level, type Result } from "@/lib/analyzer";
+import { listMyScans } from "@/lib/scans";
 
 export const Route = createFileRoute("/_authenticated/history")({
   head: () => ({
@@ -9,6 +10,8 @@ export const Route = createFileRoute("/_authenticated/history")({
       { name: "description", content: "Review the messages you've checked and their risk levels." },
       { property: "og:title", content: "Scan history — ScamGuard" },
       { property: "og:description", content: "Your past ScamGuard checks in one place." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: History,
@@ -17,11 +20,15 @@ export const Route = createFileRoute("/_authenticated/history")({
 const filters: ("all" | Level)[] = ["all", "high", "medium", "low"];
 
 function History() {
-  const [items, setItems] = useState<Result[]>([]);
+  const [items, setItems] = useState<Result[] | null>(null);
+  const [error, setError] = useState(false);
   const [f, setF] = useState<"all" | Level>("all");
-  useEffect(() => setItems([...loadResults(), ...SAMPLES]), []);
-  const shown = items.filter((i) => f === "all" || i.level === f);
-  const count = (l: Level) => items.filter((i) => i.level === l).length;
+  useEffect(() => {
+    listMyScans().then(setItems).catch(() => { setError(true); setItems([]); });
+  }, []);
+  const all = items ?? [];
+  const shown = all.filter((i) => f === "all" || i.level === f);
+  const count = (l: Level) => all.filter((i) => i.level === l).length;
 
   return (
     <main className="mx-auto max-w-5xl px-5 py-12 sm:px-6 md:py-16">
@@ -57,7 +64,10 @@ function History() {
               </Link>
             </li>
           ))}
-          {shown.length === 0 && <li className="py-10 text-center text-sm text-muted-foreground">No scans at this level.</li>}
+          {items === null && <li className="py-10 text-center text-sm text-muted-foreground">Loading your scans…</li>}
+          {items !== null && error && <li className="py-10 text-center text-sm text-high">Couldn't load your scans. Please refresh.</li>}
+          {items !== null && !error && all.length === 0 && <li className="py-10 text-center text-sm text-muted-foreground">No scans yet — <Link to="/check" className="text-primary hover:underline">check a message</Link>.</li>}
+          {all.length > 0 && shown.length === 0 && <li className="py-10 text-center text-sm text-muted-foreground">No scans at this level.</li>}
         </ul>
       </div>
     </main>

@@ -1,6 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { analyze, saveResult, type Channel } from "@/lib/analyzer";
+import { analyze, type Channel } from "@/lib/analyzer";
+import { createScan, setUnsaved } from "@/lib/scans";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/check")({
   head: () => ({
@@ -26,14 +28,26 @@ function Check() {
   const [busy, setBusy] = useState(false);
   const nav = useNavigate();
 
-  const run = () => {
+  const [err, setErr] = useState("");
+  const run = async () => {
     if (text.trim().length < 10) return;
     setBusy(true);
-    setTimeout(() => {
-      const r = analyze(text, channel);
-      saveResult(r);
+    setErr("");
+    await new Promise((res) => setTimeout(res, 600));
+    const r = analyze(text, channel);
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) {
+      setUnsaved(r);
       nav({ to: "/result/$id", params: { id: r.id } });
-    }, 900);
+      return;
+    }
+    try {
+      const id = await createScan(r);
+      nav({ to: "/result/$id", params: { id } });
+    } catch {
+      setBusy(false);
+      setErr("Couldn't save this scan. Please try again.");
+    }
   };
 
   return (
@@ -81,7 +95,8 @@ function Check() {
         >
           {busy ? "Analyzing…" : "Analyze Message"}
         </button>
-        <p className="mt-4 text-center text-xs text-muted-foreground">Your message stays on this device. Results are advisory only.</p>
+        {err && <p className="mt-3 text-center text-sm text-high">{err}</p>}
+        <p className="mt-4 text-center text-xs text-muted-foreground">Only a short preview and the result are saved to your account — never the full message. Results are advisory only.</p>
       </div>
     </main>
   );

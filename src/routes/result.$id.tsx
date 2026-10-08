@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { LEVEL_BG, LEVEL_LABEL, LEVEL_SOFT, LEVEL_TEXT, SAMPLES, loadResults, type Result } from "@/lib/analyzer";
+import { LEVEL_BG, LEVEL_LABEL, LEVEL_SOFT, LEVEL_TEXT, SAMPLES, type Result } from "@/lib/analyzer";
+import { getMyScan, getUnsaved } from "@/lib/scans";
 
 export const Route = createFileRoute("/result/$id")({
   head: () => ({
@@ -9,17 +10,30 @@ export const Route = createFileRoute("/result/$id")({
       { name: "description", content: "Risk score, warning signs, recommended actions and a Teach Me Why lesson for your message." },
       { property: "og:title", content: "Analysis result — ScamGuard" },
       { property: "og:description", content: "See the risk score and warning signs found in a suspicious message." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
   }),
   component: ResultPage,
 });
 
+type Kind = "saved" | "sample" | "unsaved";
+
 function ResultPage() {
   const { id } = Route.useParams();
   const [r, setR] = useState<Result | null | undefined>(undefined);
+  const [kind, setKind] = useState<Kind>("saved");
   useEffect(() => {
-    setR([...loadResults(), ...SAMPLES].find((x) => x.id === id) ?? null);
+    let alive = true;
+    setR(undefined);
+    const sample = SAMPLES.find((x) => x.id === id);
+    if (sample) { setKind("sample"); setR(sample); return; }
+    const local = getUnsaved(id);
+    if (local) { setKind("unsaved"); setR(local); return; }
+    setKind("saved");
+    getMyScan(id).then((x) => alive && setR(x)).catch(() => alive && setR(null));
+    return () => { alive = false; };
   }, [id]);
 
   if (r === undefined) return <main className="mx-auto max-w-5xl px-6 py-24 text-center text-muted-foreground">Loading…</main>;
@@ -27,7 +41,7 @@ function ResultPage() {
     return (
       <main className="mx-auto max-w-lg px-6 py-24 text-center">
         <h1 className="text-3xl font-bold">Result not found</h1>
-        <p className="mt-2 text-muted-foreground">This scan isn't saved on this device.</p>
+        <p className="mt-2 text-muted-foreground">This scan doesn't exist or belongs to another account. Log in to see your saved scans.</p>
         <Link to="/check" className="mt-6 inline-block rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">Check a message</Link>
       </main>
     );
@@ -38,7 +52,9 @@ function ResultPage() {
       <div className="rise flex flex-wrap items-end justify-between gap-4">
         <div>
           <span className="font-mono text-[11px] uppercase tracking-widest text-primary">Analysis · {r.channel}</span>
-          <h1 className="mt-2 text-4xl font-bold md:text-5xl">Your result</h1>
+          <h1 className="mt-2 text-4xl font-bold md:text-5xl">{kind === "sample" ? "Example scan" : "Your result"}</h1>
+          {kind === "sample" && <p className="mt-2 text-sm text-muted-foreground">This is a demo example, not part of your history.</p>}
+          {kind === "unsaved" && <p className="mt-2 text-sm text-muted-foreground"><Link to="/login" className="text-primary hover:underline">Log in</Link> to save scans to your history. This result disappears when you leave.</p>}
         </div>
         <Link to="/check" className="rounded-full border border-border bg-surface px-5 py-2.5 text-sm font-medium hover:bg-card">Check another</Link>
       </div>
@@ -62,7 +78,7 @@ function ResultPage() {
             <span className={`text-right ${lvl === "high" ? "text-high font-semibold" : ""}`}>High</span>
           </div>
           <div className="mt-6 rounded-[12px] border border-border bg-surface p-4 text-sm leading-relaxed text-muted-foreground">
-            <span className="font-medium text-foreground">Message analyzed</span>
+            <span className="font-medium text-foreground">{kind === "saved" ? "Message preview" : "Message analyzed"}</span>
             <p className="mt-1 line-clamp-5 whitespace-pre-wrap">{r.message}</p>
           </div>
         </section>
