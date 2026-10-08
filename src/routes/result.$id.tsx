@@ -1,7 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { LEVEL_BG, LEVEL_LABEL, LEVEL_SOFT, LEVEL_TEXT, SAMPLES, type Result } from "@/lib/analyzer";
-import { getMyScan, getUnsaved } from "@/lib/scans";
+import { deleteMyScan, getMyScan, getUnsaved } from "@/lib/scans";
+import { DeleteScanDialog } from "@/components/DeleteScanDialog";
+import { useAuth } from "@/hooks/useAuth";
 
 export const Route = createFileRoute("/result/$id")({
   head: () => ({
@@ -22,6 +24,8 @@ type Kind = "saved" | "sample" | "unsaved";
 
 function ResultPage() {
   const { id } = Route.useParams();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [r, setR] = useState<Result | null | undefined>(undefined);
   const [kind, setKind] = useState<Kind>("saved");
   useEffect(() => {
@@ -34,7 +38,7 @@ function ResultPage() {
     setKind("saved");
     getMyScan(id).then((x) => alive && setR(x)).catch(() => alive && setR(null));
     return () => { alive = false; };
-  }, [id]);
+  }, [id, user?.id]);
 
   if (r === undefined) return <main className="mx-auto max-w-5xl px-6 py-24 text-center text-muted-foreground">Loading…</main>;
   if (r === null)
@@ -57,7 +61,10 @@ function ResultPage() {
           {kind === "unsaved" && <p className="mt-2 text-sm text-muted-foreground"><Link to="/login" className="text-primary hover:underline">Log in</Link> to save scans to your history. This result disappears when you leave.</p>}
           {r.quiz.meta?.source === "ai" && <p className="mt-2 text-sm text-primary">AI-powered assessment · advisory only</p>}
         </div>
-        <Link to="/check" className="rounded-full border border-border bg-surface px-5 py-2.5 text-sm font-medium hover:bg-card">Check another</Link>
+        <div className="flex items-center gap-2">
+          {kind === "saved" && user && <DeleteScanDialog key={id} onDelete={async () => { await deleteMyScan(id); await navigate({ to: "/history", search: { scanDeleted: true }, replace: true }); }} />}
+          <Link to="/check" className="rounded-full border border-border bg-surface px-5 py-2.5 text-sm font-medium hover:bg-card">Check another</Link>
+        </div>
       </div>
       {r.quiz.meta?.source === "rules" && <p role="status" className="mt-5 rounded-[12px] border border-medium/30 bg-medium/10 p-4 text-sm">{r.quiz.meta.fallback} This result is not AI analysis.</p>}
 

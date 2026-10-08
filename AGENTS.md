@@ -16,3 +16,5 @@
 - Terminal AI availability/credit/access errors pause calls in a server-only service-state table; restore access and clear its pause explicitly before resuming, never retry terminal errors automatically.
 - Signup verification UI lives in a dedicated component that calls Auth signup resend with the existing callback URL and a timed click cooldown; this keeps the form and callback independent.
 - Scans are stored per user in the `scans` table with RLS (owner-only); never persist the full raw message, only a short preview — privacy requirement.
+- Password recovery uses dedicated public request/reset routes and the browser Auth client; reset forms require validated recovery provenance rather than an ordinary session, so normal sign-in cannot silently unlock recovery.
+- Individual scan deletion accepts only a validated scan ID through the existing authenticated browser client and verifies one returned row before success; ownership remains enforced by existing RLS, with no admin path.
