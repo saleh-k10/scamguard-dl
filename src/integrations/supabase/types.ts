@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_service_state: {
+        Row: {
+          id: string
+          paused: boolean
+          reason: string | null
+          status: number | null
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          paused?: boolean
+          reason?: string | null
+          status?: number | null
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          paused?: boolean
+          reason?: string | null
+          status?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       scans: {
         Row: {
           actions: Json

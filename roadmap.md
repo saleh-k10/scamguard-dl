@@ -1,3 +1,4 @@
-- [x] Add signup verification screen and resend states without changing authentication security or callback.
-- [x] Test validation, resend outcomes/cooldown, and desktop/mobile presentation (mocked email responses; seven tests passed).
-- [x] Check automatic compilation diagnostics (build OK); manual real-email delivery and same-/cross-device confirmation remain user checks, not verified here.
+- [ ] Add private AI analysis with structured validation and rule-based fallback.
+- [ ] Redact obvious credentials before transmission and persistence; show sensitive-input and fallback notices.
+- [ ] Preserve owner-only history, signed-out scans, auth, and visual design.
+- [ ] Test normalization, fallback, pages, and a real AI request; report Demo Day checks.
