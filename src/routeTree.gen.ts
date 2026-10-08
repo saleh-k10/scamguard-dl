@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as CheckRouteImport } from './routes/check'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
@@ -43,6 +44,11 @@ const SignupRoute = SignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -69,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/check': typeof CheckRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/account': typeof AuthenticatedAccountRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/history': typeof AuthenticatedHistoryRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -79,6 +86,7 @@ export interface FileRoutesByTo {
   '/check': typeof CheckRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/account': typeof AuthenticatedAccountRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/history': typeof AuthenticatedHistoryRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -91,6 +99,7 @@ export interface FileRoutesById {
   '/check': typeof CheckRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -103,6 +112,7 @@ export interface FileRouteTypes {
     | '/check'
     | '/login'
     | '/signup'
+    | '/account'
     | '/dashboard'
     | '/history'
     | '/auth/callback'
@@ -113,6 +123,7 @@ export interface FileRouteTypes {
     | '/check'
     | '/login'
     | '/signup'
+    | '/account'
     | '/dashboard'
     | '/history'
     | '/auth/callback'
@@ -124,6 +135,7 @@ export interface FileRouteTypes {
     | '/check'
     | '/login'
     | '/signup'
+    | '/_authenticated/account'
     | '/_authenticated/dashboard'
     | '/_authenticated/history'
     | '/auth/callback'
@@ -177,6 +189,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/account': {
+      id: '/_authenticated/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AuthenticatedAccountRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -209,11 +228,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAccountRoute: AuthenticatedAccountRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
 }
