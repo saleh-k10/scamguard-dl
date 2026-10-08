@@ -88,18 +88,6 @@ function shuffle(arr: string[], seed: string) {
   return copy;
 }
 
-const KEY = "scamguard.scans";
-export function saveResult(r: Result) {
-  const list = loadResults();
-  localStorage.setItem(KEY, JSON.stringify([r, ...list].slice(0, 50)));
-}
-export function loadResults(): Result[] {
-  try {
-    return JSON.parse(localStorage.getItem(KEY) || "[]");
-  } catch {
-    return [];
-  }
-}
 
 export const LEVEL_LABEL: Record<Level, string> = { low: "Low risk", medium: "Medium risk", high: "High risk" };
 export const LEVEL_TEXT: Record<Level, string> = { low: "text-low", medium: "text-medium", high: "text-high" };
