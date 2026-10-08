@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles, ShieldCheck, LockKeyhole } from "lucide-react";
 
 export const Route = createFileRoute("/")({
-  validateSearch: (search: Record<string, unknown>): { accountDeleted?: boolean } => ({ accountDeleted: search["accountDeleted"] === true || search["accountDeleted"] === "true" ? true : undefined }),
+  validateSearch: (search: Record<string, unknown>): { accountDeleted?: boolean } => (search["accountDeleted"] === true || search["accountDeleted"] === "true" ? { accountDeleted: true } : {}),
   head: () => ({
     meta: [
       { title: "ScamGuard — Think before you click" },
