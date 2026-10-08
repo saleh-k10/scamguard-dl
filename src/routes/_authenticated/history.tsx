@@ -64,7 +64,10 @@ function History() {
               </Link>
             </li>
           ))}
-          {shown.length === 0 && <li className="py-10 text-center text-sm text-muted-foreground">No scans at this level.</li>}
+          {items === null && <li className="py-10 text-center text-sm text-muted-foreground">Loading your scans…</li>}
+          {items !== null && error && <li className="py-10 text-center text-sm text-high">Couldn't load your scans. Please refresh.</li>}
+          {items !== null && !error && all.length === 0 && <li className="py-10 text-center text-sm text-muted-foreground">No scans yet — <Link to="/check" className="text-primary hover:underline">check a message</Link>.</li>}
+          {all.length > 0 && shown.length === 0 && <li className="py-10 text-center text-sm text-muted-foreground">No scans at this level.</li>}
         </ul>
       </div>
     </main>
