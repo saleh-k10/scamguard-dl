@@ -5,7 +5,7 @@ vi.mock("@/integrations/supabase/client", () => ({ supabase: { auth: { getSessio
 beforeEach(() => {
   vi.clearAllMocks(); sessionStorage.clear(); window.history.replaceState({}, "", "/reset-password");
   mocks.events.mockReturnValue({ data: { subscription: { unsubscribe: mocks.unsubscribe } } });
-  mocks.session.mockResolvedValue({ data: { session: { user: { id: "owner" } } }, error: null });
+  mocks.session.mockResolvedValue({ data: { session: { access_token: "synthetic-test-token", user: { id: "owner" } } }, error: null });
   mocks.user.mockResolvedValue({ data: { user: { id: "owner" } }, error: null });
 });
 afterEach(() => { sessionStorage.clear(); window.history.replaceState({}, "", "/"); });
@@ -42,6 +42,10 @@ describe("Recovery provenance", () => {
     sessionStorage.setItem("scamguard-password-recovery", JSON.stringify({ userId: "owner", at: Date.now() - 16 * 60_000 }));
     await expect(check()).rejects.toThrow();
     sessionStorage.setItem("scamguard-password-recovery", JSON.stringify({ userId: "someone-else", at: Date.now() }));
+    await expect(check()).rejects.toThrow();
+  });
+  it("rejects an invalid implicit token even if an ordinary session already exists", async () => {
+    window.history.replaceState({}, "", "/reset-password#type=recovery&access_token=wrong-token&refresh_token=synthetic-test-refresh");
     await expect(check()).rejects.toThrow();
   });
 });

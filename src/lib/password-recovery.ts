@@ -27,10 +27,10 @@ export function beginPasswordRecovery() {
     // Wait for Auth's automatic URL processing before explicitly exchanging a code.
     const current = await supabase.auth.getSession();
     if (current.error) throw new Error("Recovery unavailable");
-    let proven = recoveryEvent || (implicitRecovery && !!current.data.session);
+    let proven = recoveryEvent || (implicitRecovery && !!current.data.session && current.data.session.access_token === hash.get("access_token"));
     if (code && !proven) {
       const exchanged = await supabase.auth.exchangeCodeForSession(code);
-      if (exchanged.error || !exchanged.data.session || exchanged.data.redirectType !== "recovery") throw new Error("Invalid recovery code");
+      if (exchanged.error || !exchanged.data.session || !("redirectType" in exchanged.data) || exchanged.data.redirectType !== "recovery") throw new Error("Invalid recovery code");
       proven = true;
     }
     const verified = await supabase.auth.getUser();
