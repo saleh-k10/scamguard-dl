@@ -1,5 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Result, Sign, Channel, Level } from "@/lib/analyzer";
+import { redactSensitiveText } from "@/lib/sensitive-text";
 
 export const PREVIEW_LEN = 120;
 
@@ -26,7 +27,7 @@ const toResult = (r: Row): Result => ({
 });
 
 export const makePreview = (msg: string) => {
-  const t = msg.replace(/\s+/g, " ").trim();
+  const t = redactSensitiveText(msg).text.replace(/\s+/g, " ").trim();
   return t.length > PREVIEW_LEN ? t.slice(0, PREVIEW_LEN - 1) + "…" : t;
 };
 

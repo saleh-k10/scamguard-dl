@@ -55,9 +55,11 @@ function ResultPage() {
           <h1 className="mt-2 text-4xl font-bold md:text-5xl">{kind === "sample" ? "Example scan" : "Your result"}</h1>
           {kind === "sample" && <p className="mt-2 text-sm text-muted-foreground">This is a demo example, not part of your history.</p>}
           {kind === "unsaved" && <p className="mt-2 text-sm text-muted-foreground"><Link to="/login" className="text-primary hover:underline">Log in</Link> to save scans to your history. This result disappears when you leave.</p>}
+          {r.quiz.meta?.source === "ai" && <p className="mt-2 text-sm text-primary">AI-powered assessment · advisory only</p>}
         </div>
         <Link to="/check" className="rounded-full border border-border bg-surface px-5 py-2.5 text-sm font-medium hover:bg-card">Check another</Link>
       </div>
+      {r.quiz.meta?.source === "rules" && <p role="status" className="mt-5 rounded-[12px] border border-medium/30 bg-medium/10 p-4 text-sm">{r.quiz.meta.fallback} This result is not AI analysis.</p>}
 
       <div className="mt-8 grid gap-5 lg:grid-cols-[340px_1fr]">
         <section className={`rise glass-strong rounded-[22px] border-t-4 p-6 ${lvl === "high" ? "border-t-high" : lvl === "medium" ? "border-t-medium" : "border-t-low"}`}>
@@ -126,6 +128,7 @@ function TeachMeWhy({ r }: { r: Result }) {
     <section className="rise glass-strong mt-5 rounded-[22px] p-6 md:p-8 [animation-delay:140ms]">
       <span className="font-mono text-[11px] uppercase tracking-widest text-primary">Teach me why</span>
       <h2 className="mt-2 text-3xl font-bold">How this kind of scam works</h2>
+      {r.quiz.meta?.education && <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{r.quiz.meta.education}</p>}
       {techniques.length > 0 ? (
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           {techniques.map(([t, d]) => (

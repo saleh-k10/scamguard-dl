@@ -8,6 +8,13 @@
       "when": 1791459941074,
       "tag": "0000_create_scans",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791464312040,
+      "tag": "0001_ai_service_pause",
+      "breakpoints": true
     }
   ]
 }
