@@ -4,6 +4,8 @@
 
 **Live app:** https://scamguard-dl.lovable.app
 
+> We built ScamGuard for students and everyday users so that they can assess suspicious messages and learn to recognize scam warning signs before acting.
+
 Built as a university **Digital Literacy** final project.
 
 ---
@@ -33,7 +35,7 @@ Phishing and scam messages are designed to create urgency, impersonate trusted i
 
 - **The full raw message is never stored.** History persists only a short preview (max 120 characters) plus the structured result fields needed to reopen it.
 - Obvious sensitive credentials (passwords, card numbers, tokens, private keys) are detected and redacted before AI processing where practical — with a client-side warning so users can remove them themselves.
-- Scan history is protected by Row Level Security: each user can only read, insert, and delete their own scans. There is no admin path to other users' data.
+- Scan history is protected by Row Level Security: each user can only read, insert, and delete their own scans. All scan reads, saves and single-scan deletions run through the signed-in user's own browser session, so these policies always apply. The only privileged (admin) access is server-only account deletion: it verifies the caller's session, derives their user ID itself, and removes only that user's scans and account.
 - Signed-out users can scan freely; their results are temporary and never persisted.
 
 ## Tech Stack
@@ -99,6 +101,7 @@ Names only — values are provided by Lovable Cloud and must never be committed.
 ## Limitations & Future Work
 
 - AI redaction of sensitive text is heuristic — users should still remove credentials before pasting.
+- There is no application-level rate limit on AI scans; the public analysis endpoint relies only on message-length validation and the AI gateway's own limits, so heavy use could consume AI credits.
 - Analysis covers message text only; it does not open links or scan attachments/images.
 - Possible future work: password-strength breach checks, per-scan deletion from the history list, link-reputation lookup.
 
