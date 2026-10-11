@@ -19,3 +19,4 @@
 - Password recovery uses dedicated public request/reset routes and the browser Auth client; reset forms require validated recovery provenance rather than an ordinary session, so normal sign-in cannot silently unlock recovery.
 - Individual scan deletion accepts only a validated scan ID through the existing authenticated browser client and verifies one returned row before success; ownership remains enforced by existing RLS, with no admin path.
 - Publishable backend values are pinned as fallbacks in vite.config.ts because .env is git-ignored and the publish build does not receive it; only browser-safe values belong there, never secrets.
+- The authenticated layout subscribes to auth changes and unmounts private pages, clears the query cache and re-runs its gate when the session ends or switches user, so stale cross-tab UI or in-flight reads never show or act on another session.
