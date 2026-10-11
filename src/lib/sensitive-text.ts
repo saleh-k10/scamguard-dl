@@ -3,8 +3,10 @@ export function redactSensitiveText(text: string): { text: string; detected: boo
   let detected = false;
   const replace = (pattern: RegExp, replacement: string | ((...args: any[]) => string)) => {
     text = text.replace(pattern, (...args: any[]) => {
-      detected = true;
-      return typeof replacement === "string" ? replacement : replacement(...args);
+      const next = typeof replacement === "string" ? replacement : replacement(...args);
+      // Only an actual change counts; matches deliberately kept as prose do not trigger the warning.
+      if (next !== args[0]) detected = true;
+      return next;
     });
   };
   replace(/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----[\s\S]*?(?:-----END (?:RSA |EC |OPENSSH )?PRIVATE KEY-----|$)/g, "[REDACTED PRIVATE KEY]");
