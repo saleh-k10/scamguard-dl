@@ -22,7 +22,7 @@ function AuthenticatedLayout() {
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((_event, session) => {
       const id = session?.user?.id ?? null;
-      if (id === user.id) return;
+      if (id === user.id) { setEndedFor(null); return; }
       // Sign-out or a different user: unmount private pages (dropping their
       // state and any in-flight reads), clear cache, and re-run the gate.
       setEndedFor(user.id);
