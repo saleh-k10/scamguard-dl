@@ -35,7 +35,7 @@ Phishing and scam messages are designed to create urgency, impersonate trusted i
 
 - **The full raw message is never stored.** History persists only a short preview (max 120 characters) plus the structured result fields needed to reopen it.
 - Obvious sensitive credentials (passwords, card numbers, tokens, private keys) are detected and redacted before AI processing where practical — with a client-side warning so users can remove them themselves.
-- Scan history is protected by Row Level Security: each user can only read, insert, and delete their own scans. All scan reads, saves and single-scan deletions run through the signed-in user's own browser session, so these policies always apply. The only privileged (admin) access is server-only account deletion: it verifies the caller's session, derives their user ID itself, and removes only that user's scans and account.
+- Scan history is protected by Row Level Security: each user can only read, insert, and delete their own scans. All scan reads, saves and single-scan deletions run through the signed-in user's own browser session, so these policies always apply. The only privileged (admin) access to scan data is server-only account deletion: it verifies the caller's session, derives their user ID itself, and removes only that user's scans and account. Separately, the server uses its privileged client only to read and update an internal AI service-state table (AI pause status), which holds no user messages or scans.
 - Signed-out users can scan freely; their results are temporary and never persisted.
 
 ## Tech Stack
@@ -61,7 +61,7 @@ Browser (React)
 
 ## Local Setup
 
-Requires Node.js 18+ (or Bun).
+Requires Node.js 20.19+ or 22.12+ (required by Vite 7), or Bun.
 
 ```sh
 git clone <this-repository-url>
@@ -93,7 +93,7 @@ Names only — values are provided by Lovable Cloud and must never be committed.
 
 ## Security Notes
 
-- No service-role key, API key, or token is present in this repository or shipped to the browser.
+- No secret or privileged key (service-role key, AI gateway key, database password, private token) is present in this repository or shipped to the browser. The backend publishable key and URL are intentionally public and are included in the browser build by design.
 - Server-side privileged operations (AI calls, account deletion) run only in server functions; the browser never sees privileged credentials.
 - Account deletion derives the target user from the caller's validated session token — no user ID or email can be supplied by the client.
 - Database access is governed by RLS policies; the anonymous role has no access to scan data.
