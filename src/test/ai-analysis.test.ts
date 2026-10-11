@@ -56,4 +56,20 @@ describe("Sensitive text redaction", () => {
     expect(redactSensitiveText('Verify your account at https://example.org/login?token=privatevalue').text).toBe('Verify your account at https://example.org/login?token=[REDACTED]');
     expect(redactSensitiveText('URGENT: your account is frozen. Visit bit.ly/test').detected).toBe(false);
   });
+  it("leaves educational prose about passwords intact", () => {
+    for (const prose of ["Password request through a link", "Never enter your password there.", "They ask for your PIN code by phone", "Secret shopper offer"]) {
+      expect(redactSensitiveText(prose)).toEqual({ text: prose, detected: false });
+    }
+  });
+  it("still redacts genuine credentials after a bare space, quotes or assignments", () => {
+    const cases: Array<[string, string]> = [
+      ["my password Hunter2!", "Hunter2!"], ["PIN 4821", "4821"], ['password "letmein"', "letmein"],
+      ["password=opensesame", "opensesame"], ["password is bluebird", "bluebird"], ["api key abc123xyz", "abc123xyz"],
+    ];
+    for (const [input, secret] of cases) {
+      const result = redactSensitiveText(input);
+      expect(result.detected).toBe(true);
+      expect(result.text).not.toContain(secret);
+    }
+  });
 });
