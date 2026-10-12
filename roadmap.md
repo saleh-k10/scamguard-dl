@@ -2,3 +2,4 @@
 - [x] Add confirmed saved-result deletion through the existing owner-only client.
 - [x] Run the complete test suite, inspect diagnostics, and verify desktop/mobile flows.
 - [x] Apply the owner-approved visual-only refresh and verify tests, automatic diagnostics, and desktop/mobile preview without publishing.
+- [ ] Apply the superseding approved navy/cyan presentation and verify existing tests, platform diagnostics, and desktop/mobile Home, Check, sample Results and Login without publishing.
