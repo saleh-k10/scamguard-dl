@@ -120,7 +120,7 @@ input::placeholder, textarea::placeholder { color: var(--muted-foreground); opac
     background:
       radial-gradient(ellipse 62% 48% at 50% 32%, var(--example-glow), transparent 70%),
       radial-gradient(ellipse 72% 58% at 50% 72%, var(--example-glow-soft), transparent 74%);
-    mask-image: radial-gradient(ellipse at center, black 55%, transparent 100%);
+    mask-image: radial-gradient(ellipse at center, black 68%, transparent 100%);
   }
   &::after {
     content: "";
