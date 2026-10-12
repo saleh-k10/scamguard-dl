@@ -113,7 +113,7 @@ function Check() {
               disabled={busy}
               variant="ghost"
               onClick={() => setChannel(c.id)}
-              className={`rounded-md py-2 text-sm font-medium transition ${channel === c.id ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
+              className={`rounded-md py-2 text-sm font-medium transition ${channel === c.id ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
             >
               {c.label}
             </Button>

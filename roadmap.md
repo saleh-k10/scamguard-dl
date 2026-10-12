@@ -2,3 +2,4 @@
 - [x] Add confirmed saved-result deletion through the existing owner-only client.
 - [x] Run the complete test suite, inspect diagnostics, and verify desktop/mobile flows.
 - [x] Apply the owner-approved visual-only refresh and verify tests, automatic diagnostics, and desktop/mobile preview without publishing.
+- [x] Apply the superseding approved navy/cyan presentation; 67 existing tests passed and platform build diagnostics are clean. Home, Check, nonpersistent sample Results and Login inspected at 1440/375/390px without publishing. Standalone TypeScript checking is unavailable under the environment's automatic-diagnostics-only restriction.

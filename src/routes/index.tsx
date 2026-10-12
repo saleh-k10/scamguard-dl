@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Sparkles, ShieldCheck, LockKeyhole } from "lucide-react";
+import { Sparkles, ShieldCheck, LockKeyhole, ArrowRight, Mail, AlertTriangle, Clock3, Link2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
   validateSearch: (search: Record<string, unknown>): { accountDeleted?: boolean } => (search["accountDeleted"] === true || search["accountDeleted"] === "true" ? { accountDeleted: true } : {}),
@@ -27,45 +28,47 @@ function Landing() {
   return (
     <>
       {accountDeleted && <p role="status" className="mx-auto mt-5 max-w-6xl border-y border-low/25 bg-low/10 px-6 py-3 text-sm">Your account and saved scan history have been deleted.</p>}
-      <header className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 md:grid-cols-2 md:py-24">
-        <div className="rise">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-1.5 text-xs font-medium text-muted-foreground">
-            <span className="pulse-dot size-1.5 rounded-full bg-low" />Free · private · advisory
+      <header className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-12 sm:px-6 md:grid-cols-[1.05fr_1fr] md:gap-12 md:py-16 lg:gap-16 lg:py-20">
+        <div className="min-w-0">
+          <p className="mb-5 text-[11px] font-semibold uppercase text-primary">MESSAGE SAFETY, EXPLAINED</p>
+          <h1 className="text-[42px] font-bold leading-[1.06] md:text-[60px] lg:text-[64px]">Think before<br /><span className="text-primary">you click.</span></h1>
+          <p className="mt-6 max-w-[36ch] text-lg leading-relaxed text-muted-foreground">Spot suspicious messages. Understand the warning signs. Decide what to do next.</p>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Button asChild className="h-12 px-5 font-semibold"><Link to="/check">Check a Message<ArrowRight aria-hidden="true" /></Link></Button>
+            <Button asChild variant="outline" className="h-12 border-primary/50 px-5"><a href="#how">How it works</a></Button>
           </div>
-          <h1 className="text-balance text-5xl font-bold leading-[1.02] md:text-6xl">Think before<br />you click.</h1>
-          <p className="mt-5 max-w-[44ch] text-pretty text-lg text-muted-foreground">
-            Phishing emails and scam texts are designed to look real and make you act fast. Paste a suspicious message and ScamGuard scores the risk, flags the warning signs, and teaches you why — before it costs you anything.
-          </p>
-          <div className="mt-7 flex flex-wrap items-center gap-3">
-            <Link to="/check" className="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90">Check a Message</Link>
-            <a href="#how" className="rounded-md border border-border bg-surface px-5 py-3 text-sm font-medium hover:bg-card">How it works</a>
-          </div>
-          <p className="mt-4 flex items-center gap-2 text-xs font-medium text-primary"><Sparkles className="size-3.5" aria-hidden="true" />AI-powered analysis</p>
+          <p className="mt-5 flex items-center gap-2 text-xs text-muted-foreground"><ShieldCheck className="size-4 shrink-0 text-primary" aria-hidden="true" />AI-powered assessment · Advisory only</p>
         </div>
-        <div className="rise [animation-delay:120ms]">
-          <div className="glass-strong rounded-lg p-5">
-            <div className="mb-4 flex items-center gap-2"><span className="size-2.5 rounded-full bg-high" /><span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">incoming · flagged</span></div>
-            <div className="rounded-lg border border-border bg-surface p-4 text-sm leading-relaxed">
-              "URGENT: your account is frozen. Verify your bank details within 2 hours or lose access — <span className="text-high underline decoration-high/40">bit.ly/acct-fix</span>"
+        <div className="example-backdrop min-w-0">
+          <div className="glass-strong rounded-xl p-5 sm:p-6">
+            <p className="text-[10px] font-semibold uppercase text-muted-foreground">EXAMPLE ASSESSMENT</p>
+            <div className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+              <div className="flex min-w-0 items-center gap-2.5"><Mail className="size-5 shrink-0 text-primary" aria-hidden="true" /><h2 className="min-w-0 text-sm font-semibold sm:text-base">Suspicious message</h2></div>
+              <span className="shrink-0 rounded-md border border-high/35 bg-high/10 px-2 py-1 text-[11px] font-semibold text-high">High risk</span>
             </div>
-            <div className="mt-4 flex items-end gap-4">
-              <div className="font-display text-6xl font-bold leading-none text-high">87</div>
-              <div className="pb-1">
-                <div className="font-mono text-xs text-muted-foreground">/100 risk</div>
-                <div className="mt-1 inline-flex rounded-full bg-high/10 px-2.5 py-0.5 text-xs font-semibold text-high">High risk</div>
-              </div>
+            <p className="mt-4 break-words rounded-lg border border-border bg-surface p-4 text-sm leading-relaxed text-muted-foreground">URGENT: Your account is frozen. Verify your bank details within 2 hours or lose access: <span className="text-foreground [overflow-wrap:anywhere]">https://account-check.example/verify</span></p>
+            <div className="mt-5 flex items-baseline gap-3"><span className="text-6xl font-bold leading-none">87</span><span className="text-xs text-muted-foreground">/100 risk score</span></div>
+            <div className="relative mt-4 h-2 rounded-full bg-border" aria-label="Example risk score: 87 out of 100">
+              <div className="h-full w-[87%] rounded-full bg-high" />
+              <span className="absolute left-[87%] top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-card bg-high" />
             </div>
-            <div className="mt-4 space-y-2">
-              {[["text-high", "Unknown shortened link"], ["text-medium", "Artificial urgency deadline"], ["text-high", "Asks for bank details"]].map(([c, t]) => (
-                <div key={t} className="flex items-center gap-3 rounded-lg bg-surface px-3 py-2 text-sm"><span className={c}>▲</span>{t}</div>
-              ))}
+            <div className="mt-5 divide-y divide-border">
+              {[{ Icon: Clock3, text: "Artificial urgency", color: "text-medium" }, { Icon: AlertTriangle, text: "Requests bank details", color: "text-high" }, { Icon: Link2, text: "Unfamiliar link", color: "text-high" }].map(({ Icon, text, color }) => <div key={text} className="flex items-center gap-3 py-3 text-sm"><Icon className={`size-4 shrink-0 ${color}`} aria-hidden="true" />{text}</div>)}
             </div>
+            <p className="mt-3 flex items-center gap-2 border-t border-border pt-4 text-xs text-muted-foreground"><ShieldCheck className="size-4 shrink-0 text-primary" aria-hidden="true" />Verify through official channels.</p>
           </div>
         </div>
       </header>
 
+      <section id="how" className="mx-auto max-w-6xl scroll-mt-28 px-5 pb-12 sm:px-6">
+        <h2 className="sr-only">Paste → Analyze → Learn</h2>
+        <div className="grid divide-y divide-border border-y border-border md:grid-cols-3 md:divide-x md:divide-y-0">
+          {steps.map((s) => <div key={s.n} className="py-7 md:px-7 md:first:pl-0 md:last:pr-0"><div className="flex items-center gap-3"><span className="font-mono text-xs text-primary">{s.n}</span><h3 className="text-lg font-semibold">{s.t}</h3></div><p className="mt-3 max-w-[36ch] text-sm leading-relaxed text-muted-foreground">{s.d}</p></div>)}
+        </div>
+      </section>
+
       <section className="mx-auto max-w-6xl px-6 pb-8">
-        <div className="glass rounded-lg p-6 md:p-8">
+        <div className="border-t border-border py-7 md:py-8">
           <span className="font-mono text-[11px] uppercase tracking-widest text-primary">The problem</span>
           <p className="mt-3 max-w-[70ch] font-display text-xl leading-snug md:text-2xl">
             Scams no longer look like scams. They copy real banks, delivery companies and universities — and rely on one moment of hurry. A second opinion before you click is the simplest protection there is.
@@ -82,19 +85,9 @@ function Landing() {
         </div>
       </section>
 
-      <section id="how" className="mx-auto max-w-6xl scroll-mt-24 px-6 py-12">
-        <h2 className="mb-6 text-3xl font-bold">Paste → Analyze → Learn</h2>
-        <div className="grid gap-4 md:grid-cols-3">
-          {steps.map((s, i) => (
-            <div key={s.n} className="rise glass rounded-lg p-6" style={{ animationDelay: `${i * 60}ms` }}>
-              <span className="font-mono text-xs text-primary">{s.n}</span>
-              <h3 className="mt-3 text-xl font-semibold">{s.t}</h3>
-              <p className="mt-1.5 text-sm text-muted-foreground">{s.d}</p>
-            </div>
-          ))}
-        </div>
+      <section className="mx-auto max-w-6xl px-6 pb-12">
         <div className="mt-10 flex justify-center">
-          <Link to="/check" className="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90">Check a Message</Link>
+          <Button asChild className="h-12 px-6 font-semibold"><Link to="/check">Check a Message<ArrowRight aria-hidden="true" /></Link></Button>
         </div>
       </section>
     </>
