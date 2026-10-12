@@ -4,20 +4,15 @@ import { useAuth } from "@/hooks/useAuth";
 
 export function Backdrop() {
   return (
-    <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      <div className="absolute -top-40 -left-32 size-[520px] rounded-full bg-orb-1 blur-3xl" />
-      <div className="absolute top-24 -right-32 size-[560px] rounded-full bg-orb-2 blur-3xl" />
-      <div className="absolute -bottom-40 left-1/3 size-[520px] rounded-full bg-orb-3 blur-3xl" />
-      <div className="absolute top-1/2 left-1/4 size-[360px] rounded-full bg-orb-4 blur-3xl" />
-    </div>
+    <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 bg-background" />
   );
 }
 
 export function Logo() {
   return (
     <Link to="/" className="flex items-center gap-2.5">
-      <span className="grid size-8 place-items-center rounded-[10px] bg-primary font-semibold text-primary-foreground">S</span>
-      <span className="font-display text-lg font-bold tracking-tight">ScamGuard</span>
+      <span className="grid size-8 place-items-center rounded-md bg-primary font-semibold text-primary-foreground">S</span>
+      <span className="font-display text-lg font-bold">ScamGuard</span>
     </Link>
   );
 }
@@ -43,11 +38,11 @@ export function SiteNav() {
         </div>
         <div className="flex items-center gap-1 sm:gap-2">
           {user ? (
-            <button onClick={logout} className="rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background">Log out</button>
+            <button onClick={logout} className="rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background">Log out</button>
           ) : (
             <>
-              <Link to="/login" className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground">Log in</Link>
-              <Link to="/signup" className="rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background">Sign up</Link>
+              <Link to="/login" className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground">Log in</Link>
+              <Link to="/signup" className="rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background">Sign up</Link>
             </>
           )}
         </div>

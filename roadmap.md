@@ -1,3 +1,4 @@
 - [x] Add published-app password recovery, validation, and safe success/error states.
 - [x] Add confirmed saved-result deletion through the existing owner-only client.
 - [x] Run the complete test suite, inspect diagnostics, and verify desktop/mobile flows.
+- [ ] Apply the owner-approved visual-only refresh and verify tests, diagnostics, and desktop/mobile preview without publishing.
