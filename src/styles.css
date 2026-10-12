@@ -94,7 +94,7 @@
 }
 
 /* Keep existing shared surfaces and controls consistent, including legacy pill classes. */
-.glass, .glass-strong, [role="dialog"] { border-radius: var(--radius); }
+.glass:not(nav), .glass-strong, [role="dialog"] { border-radius: var(--radius); }
 button.rounded-full, a.rounded-full { border-radius: calc(var(--radius) - 2px); }
 input::placeholder, textarea::placeholder { color: var(--muted-foreground); opacity: 1; }
 
