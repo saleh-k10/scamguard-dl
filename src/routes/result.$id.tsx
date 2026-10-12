@@ -46,7 +46,7 @@ function ResultPage() {
       <main className="mx-auto max-w-lg px-6 py-24 text-center">
         <h1 className="text-3xl font-bold">Result not found</h1>
         <p className="mt-2 text-muted-foreground">This scan doesn't exist or belongs to another account. Log in to see your saved scans.</p>
-        <Link to="/check" className="mt-6 inline-block rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">Check a message</Link>
+        <Link to="/check" className="mt-6 inline-block rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground">Check a message</Link>
       </main>
     );
 
@@ -63,13 +63,13 @@ function ResultPage() {
         </div>
         <div className="flex items-center gap-2">
           {kind === "saved" && user && <DeleteScanDialog key={id} onDelete={async () => { await deleteMyScan(id); await navigate({ to: "/history", search: { scanDeleted: true }, replace: true }); }} />}
-          <Link to="/check" className="rounded-full border border-border bg-surface px-5 py-2.5 text-sm font-medium hover:bg-card">Check another</Link>
+          <Link to="/check" className="rounded-md border border-border bg-surface px-5 py-2.5 text-sm font-medium hover:bg-card">Check another</Link>
         </div>
       </div>
-      {r.quiz.meta?.source === "rules" && <p role="status" className="mt-5 rounded-[12px] border border-medium/30 bg-medium/10 p-4 text-sm">{r.quiz.meta.fallback} This result is not AI analysis.</p>}
+      {r.quiz.meta?.source === "rules" && <p role="status" className="mt-5 rounded-lg border border-medium/30 bg-medium/10 p-4 text-sm">{r.quiz.meta.fallback} This result is not AI analysis.</p>}
 
       <div className="mt-8 grid gap-5 lg:grid-cols-[340px_1fr]">
-        <section className={`rise glass-strong rounded-[22px] border-t-4 p-6 ${lvl === "high" ? "border-t-high" : lvl === "medium" ? "border-t-medium" : "border-t-low"}`}>
+        <section className={`rise glass-strong rounded-lg border-t-4 p-6 ${lvl === "high" ? "border-t-high" : lvl === "medium" ? "border-t-medium" : "border-t-low"}`}>
           <div className="flex items-center justify-between">
             <span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">Risk score</span>
             <span className={`rounded-full border px-2.5 py-0.5 text-xs font-semibold ${LEVEL_SOFT[lvl]}`}>{LEVEL_LABEL[lvl]}</span>
@@ -86,20 +86,20 @@ function ResultPage() {
             <span className={`text-center ${lvl === "medium" ? "text-medium font-semibold" : ""}`}>Medium</span>
             <span className={`text-right ${lvl === "high" ? "text-high font-semibold" : ""}`}>High</span>
           </div>
-          <div className="mt-6 rounded-[12px] border border-border bg-surface p-4 text-sm leading-relaxed text-muted-foreground">
+          <div className="mt-6 rounded-lg border border-border bg-surface p-4 text-sm leading-relaxed text-muted-foreground">
             <span className="font-medium text-foreground">{kind === "saved" ? "Message preview" : "Message analyzed"}</span>
             <p className="mt-1 line-clamp-5 whitespace-pre-wrap">{r.message}</p>
           </div>
         </section>
 
-        <section className="rise glass rounded-[22px] p-6 [animation-delay:80ms]">
+        <section className="rise glass rounded-lg p-6 [animation-delay:80ms]">
           <h2 className="text-2xl font-bold">Warning signs <span className="font-mono text-sm font-normal text-muted-foreground">· {r.signs.length} found</span></h2>
           {r.signs.length === 0 ? (
             <p className="mt-4 text-sm text-muted-foreground">No common warning signs were detected. That doesn't guarantee the message is safe.</p>
           ) : (
             <ul className="mt-4 space-y-3">
               {r.signs.map((s) => (
-                <li key={s.id} className="rounded-[12px] border border-border bg-surface p-4">
+                <li key={s.id} className="rounded-lg border border-border bg-surface p-4">
                   <div className="flex items-center gap-2 text-[15px] font-semibold">
                     <span className={s.weight >= 20 ? "text-high" : "text-medium"}>▲</span>{s.title}
                   </div>
@@ -108,7 +108,7 @@ function ResultPage() {
               ))}
             </ul>
           )}
-          <div className="mt-6 rounded-[12px] border border-primary/25 bg-primary/5 p-4">
+          <div className="mt-6 rounded-lg border border-primary/25 bg-primary/5 p-4">
             <div className="font-mono text-[11px] uppercase tracking-widest text-primary">Recommended next actions</div>
             <ol className="mt-2 space-y-1.5 text-sm">
               {r.actions.map((a, i) => (
@@ -121,7 +121,7 @@ function ResultPage() {
 
       <TeachMeWhy r={r} />
 
-      <p className="mt-6 rounded-[14px] border border-border bg-surface p-4 text-xs leading-relaxed text-muted-foreground">
+      <p className="mt-6 rounded-lg border border-border bg-surface p-4 text-xs leading-relaxed text-muted-foreground">
         <span className="font-semibold text-foreground">Advisory only.</span> ScamGuard looks for common warning signs. This result does not prove whether a message is fraudulent or safe. Always verify through official channels before clicking links, sending money or sharing personal information.
       </p>
     </main>
@@ -132,14 +132,14 @@ function TeachMeWhy({ r }: { r: Result }) {
   const [pick, setPick] = useState<number | null>(null);
   const techniques = Array.from(new Map(r.signs.map((s) => [s.technique, s.techniqueText])).entries());
   return (
-    <section className="rise glass-strong mt-5 rounded-[22px] p-6 md:p-8 [animation-delay:140ms]">
+    <section className="rise glass-strong mt-5 rounded-lg p-6 md:p-8 [animation-delay:140ms]">
       <span className="font-mono text-[11px] uppercase tracking-widest text-primary">Teach me why</span>
       <h2 className="mt-2 text-3xl font-bold">How this kind of scam works</h2>
       {r.quiz.meta?.education && <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{r.quiz.meta.education}</p>}
       {techniques.length > 0 ? (
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           {techniques.map(([t, d]) => (
-            <div key={t} className="rounded-[14px] border border-border bg-surface p-5">
+            <div key={t} className="rounded-lg border border-border bg-surface p-5">
               <h3 className="text-lg font-semibold">{t}</h3>
               <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{d}</p>
             </div>
@@ -149,7 +149,7 @@ function TeachMeWhy({ r }: { r: Result }) {
         <p className="mt-4 text-sm text-muted-foreground">No scam techniques were detected here — but here's a quick check to sharpen your instincts.</p>
       )}
 
-      <div className="mt-6 rounded-[14px] border border-border bg-surface p-5">
+      <div className="mt-6 rounded-lg border border-border bg-surface p-5">
         <span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">Quick question</span>
         <p className="mt-1.5 font-medium">{r.quiz.question}</p>
         <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
@@ -158,7 +158,7 @@ function TeachMeWhy({ r }: { r: Result }) {
             const correct = i === r.quiz.answer;
             const cls = pick === null ? "border-border bg-card hover:border-primary/50" : correct ? "border-low/40 bg-low/10 text-low font-medium" : chosen ? "border-high/40 bg-high/10 text-high" : "border-border bg-card opacity-60";
             return (
-              <button key={o} disabled={pick !== null} onClick={() => setPick(i)} className={`rounded-full border px-4 py-2 text-left text-sm transition ${cls}`}>{o}</button>
+              <button key={o} disabled={pick !== null} onClick={() => setPick(i)} className={`rounded-md border px-4 py-2 text-left text-sm transition ${cls}`}>{o}</button>
             );
           })}
         </div>
