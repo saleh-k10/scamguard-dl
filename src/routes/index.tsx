@@ -29,7 +29,7 @@ function Landing() {
       {accountDeleted && <p role="status" className="mx-auto mt-5 max-w-6xl border-y border-low/25 bg-low/10 px-6 py-3 text-sm">Your account and saved scan history have been deleted.</p>}
       <header className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 md:grid-cols-2 md:py-24">
         <div className="rise">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 text-xs font-medium text-muted-foreground">
+          <div className="mb-5 inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-1.5 text-xs font-medium text-muted-foreground">
             <span className="pulse-dot size-1.5 rounded-full bg-low" />Free · private · advisory
           </div>
           <h1 className="text-balance text-5xl font-bold leading-[1.02] md:text-6xl">Think before<br />you click.</h1>
@@ -37,15 +37,15 @@ function Landing() {
             Phishing emails and scam texts are designed to look real and make you act fast. Paste a suspicious message and ScamGuard scores the risk, flags the warning signs, and teaches you why — before it costs you anything.
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-3">
-            <Link to="/check" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90">Check a Message</Link>
-            <a href="#how" className="rounded-full border border-border bg-surface px-5 py-3 text-sm font-medium hover:bg-card">How it works</a>
+            <Link to="/check" className="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90">Check a Message</Link>
+            <a href="#how" className="rounded-md border border-border bg-surface px-5 py-3 text-sm font-medium hover:bg-card">How it works</a>
           </div>
           <p className="mt-4 flex items-center gap-2 text-xs font-medium text-primary"><Sparkles className="size-3.5" aria-hidden="true" />AI-powered analysis</p>
         </div>
         <div className="rise [animation-delay:120ms]">
-          <div className="glass-strong rounded-[22px] p-5">
+          <div className="glass-strong rounded-lg p-5">
             <div className="mb-4 flex items-center gap-2"><span className="size-2.5 rounded-full bg-high" /><span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">incoming · flagged</span></div>
-            <div className="rounded-[14px] border border-border bg-surface p-4 text-sm leading-relaxed">
+            <div className="rounded-lg border border-border bg-surface p-4 text-sm leading-relaxed">
               "URGENT: your account is frozen. Verify your bank details within 2 hours or lose access — <span className="text-high underline decoration-high/40">bit.ly/acct-fix</span>"
             </div>
             <div className="mt-4 flex items-end gap-4">
@@ -65,7 +65,7 @@ function Landing() {
       </header>
 
       <section className="mx-auto max-w-6xl px-6 pb-8">
-        <div className="glass rounded-[20px] p-6 md:p-8">
+        <div className="glass rounded-lg p-6 md:p-8">
           <span className="font-mono text-[11px] uppercase tracking-widest text-primary">The problem</span>
           <p className="mt-3 max-w-[70ch] font-display text-xl leading-snug md:text-2xl">
             Scams no longer look like scams. They copy real banks, delivery companies and universities — and rely on one moment of hurry. A second opinion before you click is the simplest protection there is.
@@ -86,7 +86,7 @@ function Landing() {
         <h2 className="mb-6 text-3xl font-bold">Paste → Analyze → Learn</h2>
         <div className="grid gap-4 md:grid-cols-3">
           {steps.map((s, i) => (
-            <div key={s.n} className="rise glass rounded-[18px] p-6" style={{ animationDelay: `${i * 60}ms` }}>
+            <div key={s.n} className="rise glass rounded-lg p-6" style={{ animationDelay: `${i * 60}ms` }}>
               <span className="font-mono text-xs text-primary">{s.n}</span>
               <h3 className="mt-3 text-xl font-semibold">{s.t}</h3>
               <p className="mt-1.5 text-sm text-muted-foreground">{s.d}</p>
@@ -94,7 +94,7 @@ function Landing() {
           ))}
         </div>
         <div className="mt-10 flex justify-center">
-          <Link to="/check" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90">Check a Message</Link>
+          <Link to="/check" className="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90">Check a Message</Link>
         </div>
       </section>
     </>

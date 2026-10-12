@@ -102,9 +102,9 @@ function Check() {
         <p className="mt-4 flex items-center gap-2 text-xs font-medium text-primary"><Sparkles className="size-3.5" aria-hidden="true" />AI assessment · advisory, not a verdict</p>
       </div>
 
-      <div className="rise glass-strong mt-8 rounded-[22px] p-5 sm:p-7 [animation-delay:80ms]">
+      <div className="rise glass-strong mt-8 rounded-lg p-5 sm:p-7 [animation-delay:80ms]">
         <div className="text-sm font-medium">Where did you receive it?</div>
-        <div role="radiogroup" className="mt-3 grid grid-cols-3 gap-2 rounded-full border border-border bg-surface p-1">
+        <div role="radiogroup" className="mt-3 grid grid-cols-3 gap-2 rounded-md border border-border bg-surface p-1">
           {channels.map((c) => (
             <Button
               key={c.id}
@@ -113,7 +113,7 @@ function Check() {
               disabled={busy}
               variant="ghost"
               onClick={() => setChannel(c.id)}
-              className={`rounded-full py-2 text-sm font-medium transition ${channel === c.id ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
+              className={`rounded-md py-2 text-sm font-medium transition ${channel === c.id ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
             >
               {c.label}
             </Button>
@@ -129,18 +129,18 @@ function Check() {
           rows={10}
           maxLength={MAX_MESSAGE_LENGTH}
           placeholder={channel === "sms" ? "e.g. Your parcel is on hold. Pay the £1.99 fee at…" : "Paste the email or message text here…"}
-          className="mt-2 w-full resize-y rounded-[14px] border border-input bg-surface p-4 text-[15px] leading-relaxed outline-none placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-ring"
+          className="mt-2 w-full resize-y rounded-lg border border-input bg-surface p-4 text-[15px] leading-relaxed outline-none placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-ring"
         />
         <div className="mt-2 flex justify-between font-mono text-xs text-muted-foreground">
           <span>{text.length} / {MAX_MESSAGE_LENGTH}</span>
           <Button variant="link" disabled={busy} className="h-auto p-0 text-xs" onClick={() => setText("URGENT: Your bank account has been suspended. Verify your identity within 2 hours to avoid closure: bit.ly/secure-verify")}>Try an example</Button>
         </div>
-        {sensitive && <p role="alert" className="mt-4 rounded-[12px] border border-medium/30 bg-medium/10 p-3 text-sm">This text may contain passwords, codes, card numbers or secrets. Obvious matches will be redacted before analysis and saving, but detection is not guaranteed. Remove sensitive information before continuing.</p>}
+        {sensitive && <p role="alert" className="mt-4 rounded-lg border border-medium/30 bg-medium/10 p-3 text-sm">This text may contain passwords, codes, card numbers or secrets. Obvious matches will be redacted before analysis and saving, but detection is not guaranteed. Remove sensitive information before continuing.</p>}
 
         <Button
           onClick={run}
           disabled={busy || text.trim().length < 10}
-          className="mt-6 h-auto w-full rounded-full py-3.5 text-sm font-semibold"
+          className="mt-6 h-auto w-full rounded-md py-3.5 text-sm font-semibold"
         >
           {busy && <LoaderCircle className="motion-safe:animate-spin" aria-hidden="true" />}
           {busy ? "Analyzing with AI…" : "Analyze Message"}
